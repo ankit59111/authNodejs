@@ -10,7 +10,6 @@ module.exports = (req, res) => {
                 const user_old_password = result.password;
                 jwt.sign({user_old_password},user_old_password,{expiresIn: '1h'},(err,token)=>{
                     res.send(`<a href="http://localhost:4200/${user_id}/${token}">http://localhost:5000/${user_id}/${token}</a>`);
-                    console.log(jwt.verify(token,user_old_password));
                 })
             } else {
                 res.status(400).send({
