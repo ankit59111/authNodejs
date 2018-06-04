@@ -1,9 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const app = express();
+app.use(cors());
 const mongoose = require('./db')();
 const loginUser = require('./controller/login.controller');
-const registerUser = require('./controller/login.controller');
+const registerUser = require('./controller/register.controller');
 const resetPassword = require('./controller/resetpasswordmail.controller');
 const updatePassword = require('./controller/updatePassword.controller');
 app.use(bodyParser.json());

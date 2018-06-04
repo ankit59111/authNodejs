@@ -5,7 +5,7 @@ module.exports=(req,res)=>{
     if(firstName&&email&&address&&password){
         userModel.find({email}).exec().then(result=>{
             if(result.length){
-                res.status(400).send({
+                res.send({
                     status:'failed',
                     message:'email_id already exists'
                 })
@@ -13,7 +13,7 @@ module.exports=(req,res)=>{
                 bcrypt.genSalt(10,(err,salt)=>{
                     bcrypt.hash(password,salt,(err,hash)=>{
                         if(err){
-                            res.status(500).send({
+                            res.send({
                                 status:'failed',
                                 message:'something went wrong during hashing'
                             })
@@ -27,10 +27,9 @@ module.exports=(req,res)=>{
                             });
                             user.save((err,result)=>{
                                 if(err){
-                                    res.status(400).send({err})
+                                    res.send({status:'failed',err})
                                 }else{
                                     res.status(200).send({
-                                        result,
                                         status:'success'})
                                 }
                             })
@@ -39,10 +38,12 @@ module.exports=(req,res)=>{
                 })
 
             }
+        }).catch(err=>{
+            res.send({status:'failed',message:'something wrong in search query',err})
         })
 
     }else{
-        res.status(400).send({
+        res.send({
             status:'failed',
             message:'missing parameters'
 

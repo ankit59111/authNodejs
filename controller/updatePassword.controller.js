@@ -9,24 +9,25 @@ module.exports = (req, res) => {
         if (result) {
             jwt.verify(old_password, result.password, (err, decoded) => {
                 if (err)
-                    res.send({message: 'it is used once'})
+                    res.send({status:'failed',message: 'it is used once'})
                 else {
                     userModel.update({_id: user_id}, {$set: {password: new_password}}).exec().then(() => {
-                        res.send({message: 'succesfully updated'})
+                        res.send({status:'success',message: 'succesfully updated'})
                     }).catch(err => {
-                        res.send({message: 'not able to update try again'});
+                        res.send({status:'failed',message: 'not able to update try again'});
                     })
                 }
             })
         }
         else {
             res.send({
+                status:'failed',
                 message: 'no such user check link'
             });
         }
 
     }).catch(err => {
-        res.send({message: 'database not working'})
+        res.send({message: 'database not working',status:'failed'})
     })
 
 }
